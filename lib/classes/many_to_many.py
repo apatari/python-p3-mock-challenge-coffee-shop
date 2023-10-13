@@ -81,6 +81,21 @@ class Customer:
     def create_order(self, coffee, price):
         return Order(self, coffee, price)
     
+    @classmethod
+    def most_aficionado(cls, coffee):
+        res = None
+        current_total = 0
+        for customer in cls.all:
+            all_prices = [order.price for order in customer.orders() if order.coffee == coffee]
+            if all_prices:
+                total = sum(all_prices)
+                if not res or total > current_total:
+                    res = customer
+                    current_total = total
+        return res
+
+
+    
 class Order:
 
     all = []
